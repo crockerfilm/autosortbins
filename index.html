@@ -116,7 +116,7 @@
   <div class="card">
     <h2>Step 1 · Download</h2>
     <div class="dl">
-      <p>Grab the kit, then unzip it. Inside you'll find a folder, a small file, and these same instructions.</p>
+      <p>Grab the kit, then unzip it. Inside is the plugin folder you'll drag in, plus these instructions.</p>
       <a class="btn btn--big" href="AutoSortBins-Install.zip" download>⤓ Download the kit</a>
     </div>
   </div>
@@ -181,19 +181,14 @@
         body:"<p>It must be closed during install, or the panel won't load. Quit it fully ("+
              (os==="mac"?"<kbd>⌘ Q</kbd>":"<kbd>Alt + F4</kbd>")+"), don't just minimize.</p>" },
 
-      { title:"Drop in the plugin folder",
+      { title:"Drag the plugin folder into place",
         body:"<p>"+P.go+"</p>"+pathRow(P.ext)+
-             "<p>Then drag the folder <span class='chip'>"+FOLDER+"</span> (from the unzipped kit) into that window.</p>" },
+             "<p>Then drag the folder <span class='chip'>"+FOLDER+"</span> (from the unzipped kit) into that window. <b>That's the whole install.</b></p>"+
+             "<p class='small'>Path won't open? That folder doesn't exist yet — create it by hand with the exact names <b>Plugins › External</b>, then drag the folder in.</p>" },
 
-      { title:"Add the registration file — read the rule first",
-        body:"<p>"+P.go+"</p>"+pathRow(P.v1)+
-             "<p>Look inside that folder <b>before</b> you drag anything:</p>"+
-             "<div class='callout safe'><b>If it's empty / no <code>premierepro.json</code> is there</b> — the normal case — drag our <span class='chip'>premierepro.json</span> in. You're good.</div>"+
-             "<div class='callout warn'><b>If a <code>premierepro.json</code> is already there</b> — <b>stop, don't replace it.</b> You have another plugin and replacing it would unregister that one. Message Hayden; he adds one line for you (30 seconds, totally safe).</div>"+
-             "<p class='small'>Path won't open / folder missing? Your machine hasn't made it yet — create the missing folders by hand with the exact names shown, then continue.</p>" },
-
-      { title:"Open Premiere and find the panel",
-        body:"<p>Launch Premiere Pro, then open <b>Window › Extensions › AutoSortBins</b>. The panel appears — done.</p>" }
+      { title:"Open it in Premiere",
+        body:"<p>Launch Premiere Pro, then open <b>Window › UXP Plugins › AutoSortBins</b>. Premiere finds the folder on its own — the panel appears. Done. ✨</p>"+
+             "<div class='callout warn'><b>Not there after a restart?</b> (rare) Open the <span class='chip'>fallback</span> folder from the kit and drag its <code>premierepro.json</code> into <code>…/UXP/PluginsInfo/v1</code>. If a <code>premierepro.json</code> is already there, <b>don't replace it</b> — message Hayden.</div>" }
     ];
   }
 
