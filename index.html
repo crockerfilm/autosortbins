@@ -89,11 +89,6 @@
   .callout.safe{background:var(--safe-bg);border-color:#2f5a40;color:#cdebd8}
   .callout b{color:#fff}
 
-  .upgrade{background:#241f2e;border:1px solid #44375e;border-radius:var(--radius);
-    padding:14px 16px;margin-bottom:14px}
-  .upgrade .u-title{font-weight:700;color:#cdb6ff;margin-bottom:6px}
-  .upgrade p{margin:0 0 8px;font-size:14px;color:#d7d7db}
-  .upgrade .small{font-size:13px;color:var(--muted);margin:0}
 
   .hidden{display:none}
   .success{background:var(--safe-bg);border:1px solid var(--safe);border-radius:var(--radius);
@@ -132,7 +127,6 @@
 
   <!-- Steps render here -->
   <div id="stepsArea" class="hidden">
-    <div id="upgradeNote" class="upgrade"></div>
     <div class="progress-wrap">
       <div class="progress-bar"><div class="progress-fill" id="fill"></div></div>
       <div class="progress-label" id="plabel">0 of 0 done</div>
@@ -140,7 +134,7 @@
     <div id="steps"></div>
     <div id="success" class="success hidden">
       <div class="big">✓ All set!</div>
-      <div>Open Premiere Pro → <b>Window › Extensions › AutoSortBins</b>.</div>
+      <div>Open Premiere Pro → <b>Window › UXP Plugins › AutoSortBins</b>.</div>
     </div>
     <button class="reset" id="reset">Reset checklist</button>
   </div>
@@ -158,13 +152,11 @@
     mac: {
       ext: "~/Library/Application Support/Adobe/UXP/Plugins/External",
       v1:  "~/Library/Application Support/Adobe/UXP/PluginsInfo/v1",
-      cep: "~/Library/Application Support/Adobe/CEP/extensions/AutoSortBins",
       go:  'In Finder press <kbd>⌘ + Shift + G</kbd>, paste the path, hit Return.'
     },
     win: {
       ext: "%APPDATA%\\Adobe\\UXP\\Plugins\\External",
       v1:  "%APPDATA%\\Adobe\\UXP\\PluginsInfo\\v1",
-      cep: "%APPDATA%\\Adobe\\CEP\\extensions\\AutoSortBins",
       go:  'Press <kbd>Win + R</kbd>, paste the path, hit Enter.'
     }
   };
@@ -246,21 +238,9 @@
     });
   }
 
-  function upgradeHTML(os){
-    var P = paths[os];
-    return '<div class="u-title">⬆️ Used AutoSortBins before? Remove the old version first</div>'+
-      '<p>This is the new <b>v2.11.0</b> panel. If you installed an older <b>v1.x</b> build, '+
-      'it lives in a different (CEP) folder and will show up as a <i>second</i> “AutoSortBins” in the Extensions menu. '+
-      'Get rid of it so you don\'t open the wrong one:</p>'+
-      '<p>'+P.go+'</p>'+pathRow(P.cep)+
-      '<p class="small">If that folder exists, drag it to your Desktop (don\'t delete — just move it). '+
-      'If the path won\'t open, you never had the old version — skip this. New to AutoSortBins? Skip this whole box.</p>';
-  }
-
   function pickOS(os){
     state.os = os; state.steps = buildSteps(os); state.checked = load();
     area.classList.remove('hidden');
-    document.getElementById('upgradeNote').innerHTML = upgradeHTML(os);
     document.querySelectorAll('.os').forEach(function(o){
       o.classList.toggle('active', o.getAttribute('data-os')===os);
     });
