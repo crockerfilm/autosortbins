@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AutoSortBins — Install Guide</title>
+<style>
+  :root{
+    --bg:#1b1b1d; --panel:#242427; --panel2:#2c2c30; --line:#37373c;
+    --text:#ececec; --muted:#9a9aa2; --accent:#4f8fe0; --accent2:#9fd0ff;
+    --safe:#2f7d54; --safe-bg:#1e3a2b; --warn-bg:#3a2f1e; --warn:#ffce6b;
+    --ok:#7ee0a6; --danger:#ff8f8f; --radius:12px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent2)}
+  .wrap{max-width:720px;margin:0 auto;padding:28px 20px 80px}
+
+  header{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .logo{font-size:30px;color:var(--accent2)}
+  h1{font-size:24px;margin:0;font-weight:800;letter-spacing:-.3px}
+  .sub{color:var(--muted);font-size:14px;margin:2px 0 26px;padding-left:42px}
+  .ver{display:inline-block;background:var(--panel2);border:1px solid var(--line);
+    color:var(--muted);font-size:12px;padding:1px 8px;border-radius:999px;margin-left:6px}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 18px;margin-bottom:16px}
+  .card h2{font-size:15px;margin:0 0 10px;color:var(--accent2);
+    text-transform:uppercase;letter-spacing:.08em}
+
+  /* download */
+  .dl{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  .dl p{margin:0;color:var(--muted);font-size:14px;flex:1;min-width:200px}
+  .btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:700;
+    border-radius:10px;padding:12px 18px;color:#fff;background:var(--accent);
+    text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:filter .15s}
+  .btn:hover{filter:brightness(1.1)}
+  .btn--big{font-size:16px}
+
+  /* OS picker */
+  .os-row{display:flex;gap:12px}
+  .os{flex:1;background:var(--panel2);border:2px solid var(--line);border-radius:12px;
+    padding:18px 12px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;
+    font-weight:700;font-size:16px;user-select:none}
+  .os:hover{border-color:#50505a}
+  .os .ic{font-size:30px;display:block;margin-bottom:6px}
+  .os.active{border-color:var(--accent);background:#243246}
+
+  /* steps */
+  .progress-wrap{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 8px;margin-bottom:8px}
+  .progress-bar{height:8px;background:var(--panel2);border-radius:999px;overflow:hidden}
+  .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--safe));
+    transition:width .25s ease}
+  .progress-label{font-size:13px;color:var(--muted);margin-top:6px}
+
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    margin-bottom:12px;overflow:hidden;transition:border-color .15s}
+  .step.done{border-color:var(--safe)}
+  .step-head{display:flex;gap:13px;align-items:flex-start;padding:15px 16px;cursor:pointer}
+  .box{flex:0 0 24px;width:24px;height:24px;border-radius:7px;border:2px solid #55555f;
+    margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:15px;
+    color:#fff;transition:background .15s,border-color .15s}
+  .step.done .box{background:var(--safe);border-color:var(--safe)}
+  .step-num{color:var(--muted);font-weight:700;font-size:13px;margin-right:2px}
+  .step-title{font-weight:700;font-size:16px}
+  .step.done .step-title{color:var(--muted);text-decoration:line-through}
+  .step-body{padding:0 16px 16px 53px;color:#d7d7db;font-size:15px}
+  .step-body p{margin:0 0 10px}
+  .step-body .small{font-size:13px;color:var(--muted)}
+  kbd{background:#3a3a40;border:1px solid #4a4a52;border-bottom-width:2px;border-radius:6px;
+    padding:1px 7px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;white-space:nowrap}
+
+  .pathrow{display:flex;align-items:stretch;gap:0;margin:10px 0;border:1px solid var(--line);
+    border-radius:9px;overflow:hidden;background:#161618}
+  .pathrow code{flex:1;padding:10px 12px;font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:13px;color:#cfe6ff;overflow-x:auto;white-space:nowrap}
+  .copy{flex:0 0 auto;border:0;border-left:1px solid var(--line);background:var(--panel2);
+    color:var(--text);cursor:pointer;font:inherit;font-size:13px;font-weight:600;padding:0 14px}
+  .copy:hover{background:#34343a}
+  .copy.copied{background:var(--safe-bg);color:var(--ok)}
+
+  .chip{display:inline-block;background:#161618;border:1px solid var(--line);border-radius:7px;
+    padding:3px 9px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:#ffd9a8}
+
+  .callout{border-radius:10px;padding:12px 14px;margin:12px 0;font-size:14px;border:1px solid}
+  .callout.warn{background:var(--warn-bg);border-color:#5a4a2a;color:#ffe1ac}
+  .callout.safe{background:var(--safe-bg);border-color:#2f5a40;color:#cdebd8}
+  .callout b{color:#fff}
+
+  .hidden{display:none}
+  .success{background:var(--safe-bg);border:1px solid var(--safe);border-radius:var(--radius);
+    padding:22px;text-align:center;margin-top:8px}
+  .success .big{font-size:22px;font-weight:800;color:var(--ok);margin-bottom:6px}
+  .reset{background:none;border:0;color:var(--muted);cursor:pointer;font:inherit;
+    font-size:13px;text-decoration:underline;margin-top:14px}
+  footer{color:var(--muted);font-size:13px;text-align:center;margin-top:34px;padding-top:18px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="logo">⊟</span>
+    <h1>AutoSortBins<span class="ver">v2.11.0</span></h1>
+  </header>
+  <div class="sub">Premiere Pro panel — install guide. Takes about a minute. No admin, nothing to “allow.”</div>
+
+  <!-- Download -->
+  <div class="card">
+    <h2>Step 1 · Download</h2>
+    <div class="dl">
+      <p>Grab the kit, then unzip it. Inside you'll find a folder, a small file, and these same instructions.</p>
+      <a class="btn btn--big" href="AutoSortBins-Install.zip" download>⤓ Download the kit</a>
+    </div>
+  </div>
+
+  <!-- OS picker -->
+  <div class="card">
+    <h2>Step 2 · Pick your computer</h2>
+    <div class="os-row">
+      <div class="os" data-os="mac"><span class="ic">🍎</span>Mac</div>
+      <div class="os" data-os="win"><span class="ic">🪟</span>Windows</div>
+    </div>
+  </div>
+
+  <!-- Steps render here -->
+  <div id="stepsArea" class="hidden">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="fill"></div></div>
+      <div class="progress-label" id="plabel">0 of 0 done</div>
+    </div>
+    <div id="steps"></div>
+    <div id="success" class="success hidden">
+      <div class="big">✓ All set!</div>
+      <div>Open Premiere Pro → <b>Window › Extensions › AutoSortBins</b>.</div>
+    </div>
+    <button class="reset" id="reset">Reset checklist</button>
+  </div>
+
+  <footer>
+    AutoSortBins · made by crockerfilm · pre-release build while the Adobe Exchange listing is in review<br>
+    Stuck on the last step? Message Hayden.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var FOLDER = "34a1d747_2.11.0";
+  var paths = {
+    mac: {
+      ext: "~/Library/Application Support/Adobe/UXP/Plugins/External",
+      v1:  "~/Library/Application Support/Adobe/UXP/PluginsInfo/v1",
+      go:  'In Finder press <kbd>⌘ + Shift + G</kbd>, paste the path, hit Return.'
+    },
+    win: {
+      ext: "%APPDATA%\\Adobe\\UXP\\Plugins\\External",
+      v1:  "%APPDATA%\\Adobe\\UXP\\PluginsInfo\\v1",
+      go:  'Press <kbd>Win + R</kbd>, paste the path, hit Enter.'
+    }
+  };
+
+  function pathRow(p){
+    return '<div class="pathrow"><code>'+p.replace(/&/g,'&amp;').replace(/</g,'&lt;')+
+      '</code><button class="copy" data-copy="'+p.replace(/"/g,'&quot;')+'">Copy</button></div>';
+  }
+
+  function buildSteps(os){
+    var P = paths[os];
+    return [
+      { title:"Quit Premiere Pro completely",
+        body:"<p>It must be closed during install, or the panel won't load. Quit it fully ("+
+             (os==="mac"?"<kbd>⌘ Q</kbd>":"<kbd>Alt + F4</kbd>")+"), don't just minimize.</p>" },
+
+      { title:"Drop in the plugin folder",
+        body:"<p>"+P.go+"</p>"+pathRow(P.ext)+
+             "<p>Then drag the folder <span class='chip'>"+FOLDER+"</span> (from the unzipped kit) into that window.</p>" },
+
+      { title:"Add the registration file — read the rule first",
+        body:"<p>"+P.go+"</p>"+pathRow(P.v1)+
+             "<p>Look inside that folder <b>before</b> you drag anything:</p>"+
+             "<div class='callout safe'><b>If it's empty / no <code>premierepro.json</code> is there</b> — the normal case — drag our <span class='chip'>premierepro.json</span> in. You're good.</div>"+
+             "<div class='callout warn'><b>If a <code>premierepro.json</code> is already there</b> — <b>stop, don't replace it.</b> You have another plugin and replacing it would unregister that one. Message Hayden; he adds one line for you (30 seconds, totally safe).</div>"+
+             "<p class='small'>Path won't open / folder missing? Your machine hasn't made it yet — create the missing folders by hand with the exact names shown, then continue.</p>" },
+
+      { title:"Open Premiere and find the panel",
+        body:"<p>Launch Premiere Pro, then open <b>Window › Extensions › AutoSortBins</b>. The panel appears — done.</p>" }
+    ];
+  }
+
+  var state = { os:null, steps:[], checked:{} };
+  var stepsArea = document.getElementById('steps');
+  var area = document.getElementById('stepsArea');
+
+  function key(){ return "autosortbins.install."+state.os; }
+  function load(){ try{ return JSON.parse(localStorage.getItem(key()))||{}; }catch(e){ return {}; } }
+  function save(){ try{ localStorage.setItem(key(), JSON.stringify(state.checked)); }catch(e){} }
+
+  function render(){
+    stepsArea.innerHTML = "";
+    state.steps.forEach(function(s, i){
+      var done = !!state.checked[i];
+      var el = document.createElement('div');
+      el.className = 'step'+(done?' done':'');
+      el.innerHTML =
+        '<div class="step-head" data-i="'+i+'">'+
+          '<div class="box">'+(done?'✓':'')+'</div>'+
+          '<div><span class="step-num">'+(i+1)+'.</span> <span class="step-title">'+s.title+'</span></div>'+
+        '</div>'+
+        '<div class="step-body">'+s.body+'</div>';
+      stepsArea.appendChild(el);
+    });
+    updateProgress();
+    bind();
+  }
+
+  function updateProgress(){
+    var total = state.steps.length, done = 0;
+    for (var i=0;i<total;i++){ if (state.checked[i]) done++; }
+    document.getElementById('fill').style.width = (total? (done/total*100):0)+'%';
+    document.getElementById('plabel').textContent = done+' of '+total+' done';
+    document.getElementById('success').classList.toggle('hidden', done<total || total===0);
+  }
+
+  function bind(){
+    document.querySelectorAll('.step-head').forEach(function(h){
+      h.onclick = function(){
+        var i = h.getAttribute('data-i');
+        state.checked[i] = !state.checked[i];
+        save(); render();
+      };
+    });
+    document.querySelectorAll('.copy').forEach(function(b){
+      b.onclick = function(e){
+        e.stopPropagation();
+        var txt = b.getAttribute('data-copy');
+        navigator.clipboard.writeText(txt).then(function(){
+          b.textContent = 'Copied!'; b.classList.add('copied');
+          setTimeout(function(){ b.textContent='Copy'; b.classList.remove('copied'); }, 1400);
+        });
+      };
+    });
+  }
+
+  function pickOS(os){
+    state.os = os; state.steps = buildSteps(os); state.checked = load();
+    area.classList.remove('hidden');
+    document.querySelectorAll('.os').forEach(function(o){
+      o.classList.toggle('active', o.getAttribute('data-os')===os);
+    });
+    render();
+    area.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  document.querySelectorAll('.os').forEach(function(o){
+    o.onclick = function(){ pickOS(o.getAttribute('data-os')); };
+  });
+  document.getElementById('reset').onclick = function(){
+    state.checked = {}; save(); render();
+  };
+})();
+</script>
+</body>
+</html>
